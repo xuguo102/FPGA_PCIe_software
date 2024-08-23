@@ -1,1 +1,0 @@
-savedcmd_/root/xilix/amd_exerciser_demo/driver_vpk120/Module.symvers :=  scripts/mod/modpost -M -m -a      -o /root/xilix/amd_exerciser_demo/driver_vpk120/Module.symvers -T /root/xilix/amd_exerciser_demo/driver_vpk120/modules.order -i Module.symvers -e 

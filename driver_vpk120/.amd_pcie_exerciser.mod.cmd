@@ -1,1 +1,0 @@
-savedcmd_/root/xilix/amd_exerciser_demo/driver_vpk120/amd_pcie_exerciser.mod := printf '%s\n'   amd_pcie_exerciser.o | awk '!x[$$0]++ { print("/root/xilix/amd_exerciser_demo/driver_vpk120/"$$0) }' > /root/xilix/amd_exerciser_demo/driver_vpk120/amd_pcie_exerciser.mod

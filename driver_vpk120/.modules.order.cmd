@@ -1,1 +1,0 @@
-savedcmd_/root/xilix/amd_exerciser_demo/driver_vpk120/modules.order := {   echo /root/xilix/amd_exerciser_demo/driver_vpk120/amd_pcie_exerciser.o; :; } > /root/xilix/amd_exerciser_demo/driver_vpk120/modules.order
