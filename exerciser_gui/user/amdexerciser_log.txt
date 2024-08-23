@@ -1,0 +1,4 @@
+--------------------------------- AMDEXERCISER App Iter Count = 0 ---------------------------------
+READ DMA SUCCESS!
+
+Performance (Mbps):

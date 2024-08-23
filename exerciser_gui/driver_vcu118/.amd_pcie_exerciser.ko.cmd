@@ -1,0 +1,1 @@
+cmd_/root/helei/XAPP1052/xbmd/driver_vcu118/amd_pcie_exerciser.ko := ld -r -m elf_x86_64 --build-id=sha1  -T scripts/module.lds -o /root/helei/XAPP1052/xbmd/driver_vcu118/amd_pcie_exerciser.ko /root/helei/XAPP1052/xbmd/driver_vcu118/amd_pcie_exerciser.o /root/helei/XAPP1052/xbmd/driver_vcu118/amd_pcie_exerciser.mod.o;  true

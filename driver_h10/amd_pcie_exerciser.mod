@@ -1,0 +1,1 @@
+/root/amd_fpga_pcie_software/amd_exerciser_demo/driver_h10/amd_pcie_exerciser.o

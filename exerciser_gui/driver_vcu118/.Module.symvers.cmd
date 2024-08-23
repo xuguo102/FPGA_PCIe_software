@@ -1,0 +1,1 @@
+cmd_/root/helei/XAPP1052/xbmd/driver_vcu118/Module.symvers := sed 's/\.ko$$/\.o/' /root/helei/XAPP1052/xbmd/driver_vcu118/modules.order | scripts/mod/modpost -m -a  -o /root/helei/XAPP1052/xbmd/driver_vcu118/Module.symvers -e -i Module.symvers   -T -

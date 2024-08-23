@@ -1,0 +1,1 @@
+savedcmd_/root/amd_fpga_pcie_software/amd_exerciser_demo/driver_h10/Module.symvers :=  scripts/mod/modpost -m -a      -o /root/amd_fpga_pcie_software/amd_exerciser_demo/driver_h10/Module.symvers -T /root/amd_fpga_pcie_software/amd_exerciser_demo/driver_h10/modules.order -i Module.symvers -e 

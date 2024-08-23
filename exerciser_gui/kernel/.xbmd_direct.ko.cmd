@@ -1,0 +1,1 @@
+cmd_/root/helei/XAPP1052/xbmd/kernel/xbmd_direct.ko := ld -r -m elf_x86_64 --build-id=sha1  -T scripts/module.lds -o /root/helei/XAPP1052/xbmd/kernel/xbmd_direct.ko /root/helei/XAPP1052/xbmd/kernel/xbmd_direct.o /root/helei/XAPP1052/xbmd/kernel/xbmd_direct.mod.o;  true

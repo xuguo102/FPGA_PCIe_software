@@ -1,0 +1,1 @@
+savedcmd_/root/xilix/amd_exerciser_demo/driver_vpk120/amd_pcie_exerciser.ko := ld -r -m elf_x86_64 -z noexecstack --build-id=sha1  -T scripts/module.lds -o /root/xilix/amd_exerciser_demo/driver_vpk120/amd_pcie_exerciser.ko /root/xilix/amd_exerciser_demo/driver_vpk120/amd_pcie_exerciser.o /root/xilix/amd_exerciser_demo/driver_vpk120/amd_pcie_exerciser.mod.o

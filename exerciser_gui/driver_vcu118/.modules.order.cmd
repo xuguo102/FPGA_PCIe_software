@@ -1,0 +1,1 @@
+cmd_/root/helei/XAPP1052/xbmd/driver_vcu118/modules.order := {   echo /root/helei/XAPP1052/xbmd/driver_vcu118/amd_pcie_exerciser.ko; :; } | awk '!x[$$0]++' - > /root/helei/XAPP1052/xbmd/driver_vcu118/modules.order

@@ -1,0 +1,1 @@
+cmd_/root/helei/XAPP1052/xbmd/kernel/Module.symvers := sed 's/\.ko$$/\.o/' /root/helei/XAPP1052/xbmd/kernel/modules.order | scripts/mod/modpost -m -a  -o /root/helei/XAPP1052/xbmd/kernel/Module.symvers -e -i Module.symvers   -T -
