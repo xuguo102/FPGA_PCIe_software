@@ -245,7 +245,7 @@ irqreturn_t XPCIe_IRQHandler(int irq, void *dev_id)
     /*uint32_t i, regx, msiReg;*/
     pbe_device *dev = dev_id;
 
-    printk(KERN_WARNING"%s: AER Interrupt Comming ...",dev->name);
+    printk(KERN_WARNING"%s: AER Interrupt Coming ...",dev->name);
 
 #if 0
     msiReg = XPCIe_ReadReg(dev, Reg_DeviceMSIControl);
@@ -881,7 +881,7 @@ static int XPCIe_Probe(struct pci_dev *pci, const struct pci_device_id *pci_id)
 
     pci_set_drvdata(pci, dev);
 
-    pci_enable_pcie_error_reporting(pci);
+    /*pci_enable_pcie_error_reporting(pci);*/
 
     // Bus Master Enable
     if (0 > pci_enable_device(pci)) {
@@ -1049,7 +1049,7 @@ static int XPCIe_Probe(struct pci_dev *pci, const struct pci_device_id *pci_id)
 #endif
 
     /*if (IS_ERR(class = class_create(THIS_MODULE, AMDEXERCISER_NAME))) {*/
-    if (IS_ERR(class = class_create( AMDEXERCISER_NAME))) {
+    if (IS_ERR(class = class_create(AMDEXERCISER_NAME))) {
         printk("Failed to creating %s device class.\n", AMDEXERCISER_NAME);
         XPCIe_Exit(dev);
         goto err_unreg_class;
@@ -1106,11 +1106,124 @@ void XPCIe_Remove(struct pci_dev *pci)
     XPCIe_Exit(pci_get_drvdata(pci));
 }
 
+/**
+ * amdexerciser_remove() - Called when device is removed (hot-plugable)
+ * @pci_dev:	PCI device information struct
+ *
+ * Or when driver is unloaded respecitively when unbind is done.
+ */
+static void amdexerciser_remove(struct pci_dev *pci_dev)
+{
+    printk("**TODO AER : Do amdexerciser_remove ****\n");
+	/*struct amdexerciser_dev *cd = dev_get_drvdata(&pci_dev->dev);*/
+
+	/*amdexerciser_health_check_stop(cd);*/
+
+	/*
+	 * amdexerciser_stop() must survive if it is called twice
+	 * sequentially. This happens when the health thread calls it
+	 * and fails on amdexerciser_bus_reset().
+	 */
+	/*amdexerciser_stop(cd);*/
+	/*amdexerciser_pci_remove(cd);*/
+	/*amdexerciser_dev_free(cd);*/
+    return;
+}
+
+/**
+ * amdexerciser_err_error_detected() - Error detection callback
+ * @pci_dev:	PCI device information struct
+ * @state:	PCI channel state
+ *
+ * This callback is called by the PCI subsystem whenever a PCI bus
+ * error is detected.
+ */
+static pci_ers_result_t amdexerciser_err_error_detected(struct pci_dev *pci_dev,
+						 pci_channel_state_t state)
+{
+	/*struct amdexerciser_dev *cd;*/
+
+    dev_err(&pci_dev->dev, "[%s] state=%d\n", __func__, state);
+    printk("**TODO AER : amdexerciser_err_error_detected ****\n");
+
+	/*cd = dev_get_drvdata(&pci_dev->dev);*/
+	/*if (cd == NULL)*/
+		/*return PCI_ERS_RESULT_DISCONNECT;*/
+
+	/* Stop the card */
+	/*amdexerciser_health_check_stop(cd);*/
+	/*amdexerciser_stop(cd);*/
+
+	/*
+	 * On permanent failure, the PCI code will call device remove
+	 * after the return of this function.
+	 * amdexerciser_stop() can be called twice.
+	 */
+	/*if (state == pci_channel_io_perm_failure) {*/
+		/*return PCI_ERS_RESULT_DISCONNECT;*/
+	/*} else {*/
+		/*amdexerciser_pci_remove(cd);*/
+		/*return PCI_ERS_RESULT_NEED_RESET;*/
+	/*}*/
+    return PCI_ERS_RESULT_NEED_RESET;
+}
+
+static pci_ers_result_t amdexerciser_err_slot_reset(struct pci_dev *pci_dev)
+{
+   /* int rc;*/
+    printk("**TODO AER : Do slot_reset ****\n");
+	/*struct amdexerciser_dev *cd = dev_get_drvdata(&pci_dev->dev);*/
+
+	/*rc = amdexerciser_pci_setup(cd);*/
+	/*if (!rc) {*/
+		/*return PCI_ERS_RESULT_RECOVERED;*/
+	/*} else {*/
+		/*dev_err(&pci_dev->dev,*/
+			/*"err: problems with PCI setup (err=%d)\n", rc);*/
+		/*return PCI_ERS_RESULT_DISCONNECT;*/
+   /* }*/
+    return PCI_ERS_RESULT_RECOVERED;
+}
+
+static pci_ers_result_t amdexerciser_err_result_none(struct pci_dev *dev)
+{
+    printk("**TODO AER : return PCI_ERS_RESULT_NONE ****\n");
+	return PCI_ERS_RESULT_NONE;
+}
+
+static void amdexerciser_err_resume(struct pci_dev *pci_dev)
+{
+    printk("**TODO AER : do resume ****\n");
+	/*int rc;*/
+	/*struct amdexerciser_dev *cd = dev_get_drvdata(&pci_dev->dev);*/
+
+	/*rc = amdexerciser_start(cd);*/
+	/*if (!rc) {*/
+		/*rc = amdexerciser_health_check_start(cd);*/
+		/*if (rc)*/
+			/*dev_err(&pci_dev->dev,*/
+				/*"err: cannot start health checking! (err=%d)\n",*/
+				/*rc);*/
+	/*} else {*/
+		/*dev_err(&pci_dev->dev,*/
+			/*"err: cannot start card services! (err=%d)\n", rc);*/
+	/*}*/
+    return;
+}
+
+static const struct pci_error_handlers amdexerciser_err_handler = {
+	.error_detected = amdexerciser_err_error_detected,
+	.mmio_enabled	= amdexerciser_err_result_none,
+	.slot_reset	= amdexerciser_err_slot_reset,
+	.resume		= amdexerciser_err_resume,
+};
+
 static struct pci_driver XPCIe_driver = {
     .name = KBUILD_MODNAME,
     .id_table = XPCIe_ids,
     .probe = XPCIe_Probe,
     .remove = XPCIe_Remove,
+	.err_handler = &amdexerciser_err_handler,
 };
 
 module_pci_driver(XPCIe_driver);
