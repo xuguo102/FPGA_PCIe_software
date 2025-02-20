@@ -72,92 +72,63 @@
 
 #define DMA_BUF_SIZE   MEGABYTES(2)
 
-typedef enum XbmDmaControlReg
+typedef enum ControlReg
 {
-    Reg_DeviceCS = 0, // NOTE(michiel): Control Status
-    Reg_DeviceDMACS,  // NOTE(michiel): DMA Control Status
-    Reg_WriteTlpAddress,
-    Reg_WriteTlpSize,
-    Reg_WriteTlpCount,
-    Reg_WriteTlpPattern,
-    Reg_ReadTlpPattern,
-    Reg_ReadTlpAddress,
-    Reg_ReadTlpSize,
-    Reg_ReadTlpCount,
+    Reg_DmaReadAddressLow       = 0x0, // NOTE: DMA Control Status
+    Reg_DmaReadAddressHight     = 0x4, // NOTE: DMA Control Status
+    Reg_DmaReadSize             = 0x8, // NOTE: DMA Control Status
+    Reg_DmaReadControlStates    = 0xc, // NOTE: DMA Control Status
+    Reg_DmaWriteAddressLow      = 0x10,
+    Reg_DmaWriteAddressHight    = 0x14,
+    Reg_DmaWriteSize            = 0x18,
+    Reg_DmaWriteControlStates   = 0x1c, // NOTE: DMA Control Status
+    Reg_ErrorInjectControl      = 0x20,
+    Reg_WriteTlpPattern         = 0x24,
     Reg_WriteDMAPerf,
     Reg_ReadDMAPerf,
     Reg_ReadComplStatus,
     Reg_ComplWithData,
     Reg_ComplSize,
     Reg_DeviceLinkWidth,
-    Reg_DeviceLinkTlpSize,
-    Reg_DeviceMiscControl,
-    Reg_DeviceMSIControl,
+    Reg_DeviceLinkTlpSize
 
-    Reg_ErrorInjectControl,
-    Reg_AerCorErrorInjectControl,
-    Reg_AerUNCorErrorInjectControl,
-    Reg_AerControl,
-
-    Reg_DeviceDirectedLinkChange,
-    Reg_DeviceFCControl,
-    Reg_DeviceFCPostedInfo,
-    Reg_DeviceFCNonPostedInfo,
-    Reg_DeviceFCCompletionInfo,
-
-} XbmDmaControlReg;
+} ControlReg;
 
 #define PBE_IOC_MAGIC          '!'
 
-#define PBE_IOC_INITCARD       _IO(PBE_IOC_MAGIC, 0)
-#define PBE_IOC_RESET          _IO(PBE_IOC_MAGIC, 1)
-#define PBE_IOC_DISP_REGS      _IO(PBE_IOC_MAGIC, 2)
-#define PBE_IOC_READ_CTRL      _IOR(PBE_IOC_MAGIC, 3, uint32_t *)
-#define PBE_IOC_READ_DMA_CTRL  _IOR(PBE_IOC_MAGIC, 4, uint32_t *)
-#define PBE_IOC_READ_WR_ADDR   _IOR(PBE_IOC_MAGIC, 5, uint32_t *)
-#define PBE_IOC_READ_WR_LEN    _IOR(PBE_IOC_MAGIC, 6, uint32_t *)
-#define PBE_IOC_READ_WR_COUNT  _IOR(PBE_IOC_MAGIC, 7, uint32_t *)
-#define PBE_IOC_READ_WR_PTRN   _IOR(PBE_IOC_MAGIC, 8, uint32_t *)
-#define PBE_IOC_READ_RD_PTRN   _IOR(PBE_IOC_MAGIC, 9, uint32_t *)
-#define PBE_IOC_READ_RD_ADDR   _IOR(PBE_IOC_MAGIC, 10, uint32_t *)
-#define PBE_IOC_READ_RD_LEN    _IOR(PBE_IOC_MAGIC, 11, uint32_t *)
-#define PBE_IOC_READ_RD_COUNT  _IOR(PBE_IOC_MAGIC, 12, uint32_t *)
-#define PBE_IOC_READ_WR_PERF   _IOR(PBE_IOC_MAGIC, 13, uint32_t *)
-#define PBE_IOC_READ_RD_PERF   _IOR(PBE_IOC_MAGIC, 14, uint32_t *)
-#define PBE_IOC_READ_CMPL      _IOR(PBE_IOC_MAGIC, 15, uint32_t *)
-#define PBE_IOC_READ_CWDATA    _IOR(PBE_IOC_MAGIC, 16, uint32_t *)
-#define PBE_IOC_READ_CSIZE     _IOR(PBE_IOC_MAGIC, 17, uint32_t *)
-#define PBE_IOC_READ_LINKWDTH  _IOR(PBE_IOC_MAGIC, 18, uint32_t *)
-#define PBE_IOC_READ_LINKLEN   _IOR(PBE_IOC_MAGIC, 19, uint32_t *)
-#define PBE_IOC_READ_MISC_CTL  _IOR(PBE_IOC_MAGIC, 20, uint32_t *)
-#define PBE_IOC_READ_INTRPT    _IOR(PBE_IOC_MAGIC, 21, uint32_t *)
-#define PBE_IOC_READ_DIR_LINK  _IOR(PBE_IOC_MAGIC, 22, uint32_t *)
-#define PBE_IOC_READ_FC_CTRL   _IOR(PBE_IOC_MAGIC, 23, uint32_t *)
-#define PBE_IOC_READ_FC_POST   _IOR(PBE_IOC_MAGIC, 24, uint32_t *)
-#define PBE_IOC_READ_FC_NPOST  _IOR(PBE_IOC_MAGIC, 25, uint32_t *)
-#define PBE_IOC_READ_FC_CMPL   _IOR(PBE_IOC_MAGIC, 26, uint32_t *)
-#define PBE_IOC_WRITE_DMA_CTRL _IOW(PBE_IOC_MAGIC, 27, uint32_t)
-#define PBE_IOC_WRITE_WR_LEN   _IOW(PBE_IOC_MAGIC, 28, uint32_t)
-#define PBE_IOC_WRITE_WR_COUNT _IOW(PBE_IOC_MAGIC, 29, uint32_t)
-#define PBE_IOC_WRITE_WR_PTRN  _IOW(PBE_IOC_MAGIC, 30, uint32_t)
-#define PBE_IOC_WRITE_RD_LEN   _IOW(PBE_IOC_MAGIC, 31, uint32_t)
-#define PBE_IOC_WRITE_RD_COUNT _IOW(PBE_IOC_MAGIC, 32, uint32_t)
-#define PBE_IOC_WRITE_RD_PTRN  _IOW(PBE_IOC_MAGIC, 33, uint32_t)
-#define PBE_IOC_WRITE_MISC_CTL _IOW(PBE_IOC_MAGIC, 34, uint32_t)
-#define PBE_IOC_WRITE_DIR_LINK _IOW(PBE_IOC_MAGIC, 35, uint32_t)
-#define PBE_IOC_RD_BMD_REG     _IOWR(PBE_IOC_MAGIC, 36, uint32_t *)
-#define PBE_IOC_RD_CFG_REG     _IOWR(PBE_IOC_MAGIC, 37, uint32_t *)
-#define PBE_IOC_WR_BMD_REG     _IOW(PBE_IOC_MAGIC, 38, uint64_t)
-#define PBE_IOC_WR_CFG_REG     _IOW(PBE_IOC_MAGIC, 39, uint64_t)
+#define PBE_IOC_INITCARD                  _IO(PBE_IOC_MAGIC, 0)
+#define PBE_IOC_READ_READ_DMA_CTRL        _IOR(PBE_IOC_MAGIC, 1, uint32_t *)
+#define PBE_IOC_READ_WRITE_DMA_CTRL       _IOR(PBE_IOC_MAGIC, 2, uint32_t *)
+#define PBE_IOC_READ_RD_ADDR_LOW          _IOR(PBE_IOC_MAGIC, 3, uint32_t *)
+#define PBE_IOC_READ_RD_ADDR_HIGHT        _IOR(PBE_IOC_MAGIC, 4, uint32_t *)
+#define PBE_IOC_READ_WR_ADDR_LOW          _IOR(PBE_IOC_MAGIC, 5, uint32_t *)
+#define PBE_IOC_READ_WR_ADDR_HIGHT        _IOR(PBE_IOC_MAGIC, 6, uint32_t *)
+#define PBE_IOC_READ_RD_LEN               _IOR(PBE_IOC_MAGIC, 7, uint32_t *)
+#define PBE_IOC_READ_WR_LEN               _IOR(PBE_IOC_MAGIC, 8, uint32_t *)
+#define PBE_IOC_READ_WR_PERF              _IOR(PBE_IOC_MAGIC, 9, uint32_t *)
+#define PBE_IOC_READ_RD_PERF              _IOR(PBE_IOC_MAGIC, 10, uint32_t *)
+#define PBE_IOC_READ_CMPL                 _IOR(PBE_IOC_MAGIC, 11, uint32_t *)
+#define PBE_IOC_READ_CWDATA               _IOR(PBE_IOC_MAGIC, 12, uint32_t *)
+#define PBE_IOC_READ_CSIZE                _IOR(PBE_IOC_MAGIC, 13, uint32_t *)
+#define PBE_IOC_READ_LINKWDTH             _IOR(PBE_IOC_MAGIC, 14, uint32_t *)
+#define PBE_IOC_READ_LINKLEN              _IOR(PBE_IOC_MAGIC, 15, uint32_t *)
+#define PBE_IOC_READ_INTRPT               _IOR(PBE_IOC_MAGIC, 16, uint32_t *)
+#define PBE_IOC_READ_DIR_LINK             _IOR(PBE_IOC_MAGIC, 17, uint32_t *)
+#define PBE_IOC_WRITE_WR_ADDR_LOW         _IOR(PBE_IOC_MAGIC, 20, uint32_t *)
+#define PBE_IOC_WRITE_RD_ADDR_LOW         _IOR(PBE_IOC_MAGIC, 21, uint32_t *)
+#define PBE_IOC_WRITE_RD_ADDR_HIGHT       _IOR(PBE_IOC_MAGIC, 22, uint32_t *)
+#define PBE_IOC_WRITE_WR_ADDR_HIGHT       _IOR(PBE_IOC_MAGIC, 23, uint32_t *)
+#define PBE_IOC_WRITE_READ_DMA_CTRL       _IOR(PBE_IOC_MAGIC, 24, uint32_t *)
+#define PBE_IOC_WRITE_WRITE_DMA_CTRL      _IOR(PBE_IOC_MAGIC, 25, uint32_t *)
+#define PBE_IOC_WRITE_WR_LEN              _IOW(PBE_IOC_MAGIC, 26, uint32_t)
+#define PBE_IOC_WRITE_WR_PTRN             _IOW(PBE_IOC_MAGIC, 27, uint32_t)
+#define PBE_IOC_WRITE_RD_LEN              _IOW(PBE_IOC_MAGIC, 28, uint32_t)
+#define PBE_IOC_WRITE_RD_PTRN             _IOW(PBE_IOC_MAGIC, 29, uint32_t)
+#define PBE_IOC_WRITE_DIR_LINK            _IOW(PBE_IOC_MAGIC, 30, uint32_t)
+#define PBE_IOC_RD_ANY_REG                _IOWR(PBE_IOC_MAGIC, 31, uint32_t *)
+#define PBE_IOC_RD_CFG_REG                _IOWR(PBE_IOC_MAGIC, 32, uint32_t *)
+#define PBE_IOC_WR_ANY_REG                _IOW(PBE_IOC_MAGIC, 33, uint64_t)
+#define PBE_IOC_WR_CFG_REG                _IOW(PBE_IOC_MAGIC, 34, uint64_t)
 
-#define PBE_IOC_READ_AER_CNTL           _IOR(PBE_IOC_MAGIC, 40, uint32_t *)
-#define PBE_IOC_WRITE_AER_CNTL          _IOR(PBE_IOC_MAGIC, 41, uint32_t *)
-
-#define PBE_IOC_READ_ERRORINJECT        _IOR(PBE_IOC_MAGIC, 42, uint32_t *)
-#define PBE_IOC_WRITE_ERRORINJECT       _IOR(PBE_IOC_MAGIC, 43, uint32_t *)
-
-#define PBE_IOC_READ_COR_ERRORINJECT    _IOR(PBE_IOC_MAGIC, 44, uint32_t *)
-#define PBE_IOC_WRITE_COR_ERRORINJECT   _IOR(PBE_IOC_MAGIC, 45, uint32_t *)
-
-#define PBE_IOC_READ_UNCOR_ERRORINJECT  _IOR(PBE_IOC_MAGIC, 46, uint32_t *)
-#define PBE_IOC_WRITE_UNCOR_ERRORINJECT _IOR(PBE_IOC_MAGIC, 47, uint32_t *)
+#define PBE_IOC_READ_ERRORINJECT          _IOR(PBE_IOC_MAGIC, 35, uint32_t *)
+#define PBE_IOC_WRITE_ERRORINJECT         _IOR(PBE_IOC_MAGIC, 36, uint32_t *)
