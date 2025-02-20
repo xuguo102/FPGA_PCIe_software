@@ -205,6 +205,10 @@ void PCIe_InitCard(pbe_device *dev)
     RegValue = PCIe_ReadReg(dev, Reg_DmaWriteAddressLow);
     printk("*************** Reg_DmaWriteAddressLow : 0x%08x ****************\n", RegValue);
 
+    PCIe_WriteReg(dev, Reg_DmaReadAddressLow, dev->readAddr);        // Write: Write DMA TLP Address register with starting address
+    RegValue = PCIe_ReadReg(dev, Reg_DmaReadAddressLow);
+    printk("*************** Reg_DmaReadAddressLow : 0x%08x ****************\n", RegValue);
+
     PCIe_WriteReg(dev, Reg_DmaWriteSize, 0x100);                // Write: Write DMA TLP Size register with default value (32dwords)
     RegValue = PCIe_ReadReg(dev, Reg_DmaWriteSize);
     printk("*************** Reg_DmaWriteSize : 0x%08x ****************\n", RegValue);
