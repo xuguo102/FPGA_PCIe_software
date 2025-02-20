@@ -284,14 +284,14 @@ irqreturn_t PCIe_IRQMSIHandler(int irq, void *dev_id)
 uint32_t PCIe_ReadReg(pbe_device *dev, uint32_t dw_offset)
 {
     uint32_t ret = 0;
-    ret = readl(dev->baseVirtual + (4 * dw_offset));
+    ret = readl(dev->baseVirtual + dw_offset);
 
     return ret;
 }
 
 void PCIe_WriteReg(pbe_device *dev, uint32_t dw_offset, uint32_t val)
 {
-    writel(val, (dev->baseVirtual + (4 * dw_offset)));
+    writel(val, (dev->baseVirtual + dw_offset));
 }
 
 #if 0
